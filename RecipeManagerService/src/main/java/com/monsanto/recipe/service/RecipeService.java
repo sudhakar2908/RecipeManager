@@ -1,7 +1,9 @@
 package com.monsanto.recipe.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,6 +100,32 @@ public class RecipeService {
 					
 				)) {
 				return new ApiResponse(false, "Atleast one ingredient need to be provide", HttpStatus.BAD_REQUEST.value());
+			}
+			else {
+				Set<String> ingredients = new HashSet<>();
+				if(isValidIngredient(ingredient1))
+			        ingredients.add(ingredient1.trim().toLowerCase());
+				
+				if(isValidIngredient(ingredient2)) {
+			        if(ingredients.size() > 0 && ingredients.contains(ingredient2.trim().toLowerCase())) {
+						return new ApiResponse(false, "Two ingredients not to be the same!", HttpStatus.BAD_REQUEST.value());
+			        }
+			        ingredients.add(ingredient2.trim().toLowerCase());
+			      }
+
+			      if(isValidIngredient(ingredient3)) {
+			        if(ingredients.size() > 0 && ingredients.contains(ingredient3.trim().toLowerCase())) {
+						return new ApiResponse(false, "Two ingredients not to be the same!", HttpStatus.BAD_REQUEST.value());
+
+			        }
+			        ingredients.add(ingredient3.trim().toLowerCase());
+			      }
+
+			      if(isValidIngredient(ingredient4)) {
+			        if(ingredients.size() > 0 && ingredients.contains(ingredient4.trim().toLowerCase())) {
+						return new ApiResponse(false, "Two ingredients not to be the same!", HttpStatus.BAD_REQUEST.value());
+			        }
+			      }				
 			}
 			
 			Recipe recipe = recipeRepository.findByName(recipeName.trim());
